@@ -42,7 +42,7 @@ export default function Footer() {
       <div className="border-b border-white/10">
         <div className="container-site py-8 flex flex-col md:flex-row items-center justify-between gap-4">
           <div>
-            <h2 className="text-lg font-bold text-white mb-1">
+            <h2 className="text-lg font-bold !text-white mb-1">
               Ready to build the future of healthcare?
             </h2>
             <p className="text-sm text-white/60">
@@ -148,7 +148,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-white/80 mb-4 pb-2 border-b border-white/10">
+            <h3 className="text-xs font-semibold uppercase tracking-widest !text-white/90 mb-4 pb-2 border-b border-white/10">
               Quick Links
             </h3>
             <ul className="space-y-2.5">
@@ -167,7 +167,7 @@ export default function Footer() {
 
           {/* Research */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-white/80 mb-4 pb-2 border-b border-white/10">
+            <h3 className="text-xs font-semibold uppercase tracking-widest !text-white/90 mb-4 pb-2 border-b border-white/10">
               Research
             </h3>
             <ul className="space-y-2.5">
@@ -186,7 +186,7 @@ export default function Footer() {
 
           {/* Incubation */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-white/80 mb-4 pb-2 border-b border-white/10">
+            <h3 className="text-xs font-semibold uppercase tracking-widest !text-white/90 mb-4 pb-2 border-b border-white/10">
               Incubation
             </h3>
             <ul className="space-y-2.5">
