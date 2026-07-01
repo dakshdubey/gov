@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import Link from "next/link";
 import { Menu, X, ChevronRight } from "lucide-react";
 import { NAV_LINKS, SITE } from "@/lib/data";
@@ -10,9 +10,10 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
 
   const handleScroll = useCallback(() => {
-    setIsScrolled(window.scrollY > 24);
+    setIsScrolled(window.scrollY > 20);
   }, []);
 
   useEffect(() => {
@@ -31,7 +32,7 @@ export default function Header() {
           }
         });
       },
-      { rootMargin: "-40% 0px -55% 0px" }
+      { rootMargin: "-30% 0px -60% 0px" }
     );
     sections.forEach((s) => observer.observe(s));
     return () => observer.disconnect();
@@ -42,72 +43,114 @@ export default function Header() {
     const id = href.replace("#", "");
     const el = document.getElementById(id);
     if (el) {
-      el.scrollIntoView({ behavior: "smooth", block: "start" });
+      // Offset for the sticky floating header
+      const yOffset = -76;
+      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      window.scrollTo({ top: y, behavior: "smooth" });
     }
   };
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
-            ? "bg-white/95 backdrop-blur-md border-b border-[var(--color-border)] shadow-sm"
-            : "bg-transparent"
+            ? "py-3"
+            : "py-5"
         }`}
         role="banner"
       >
-        <div className="container-site">
-          <div className="flex items-center justify-between h-16 lg:h-18">
+        <div className="container-site max-w-7xl mx-auto px-4">
+          <div
+            className={`flex items-center justify-between px-6 h-14 md:h-16 rounded-[14px] transition-all duration-500 ${
+              isScrolled
+                ? "bg-white/85 backdrop-blur-md border border-white/50 shadow-[0_8px_30px_rgb(0,0,0,0.06)]"
+                : "bg-white/40 backdrop-blur-sm border border-white/20"
+            }`}
+          >
             {/* Logo */}
             <Link
               href="#home"
-              onClick={() => handleNavClick("#home")}
-              className="flex items-center gap-3 flex-shrink-0 group"
+              onClick={(e) => {
+                e.preventDefault();
+                handleNavClick("#home");
+              }}
+              className="flex items-center gap-3 flex-shrink-0 group select-none"
               aria-label="DIMHANS Home"
             >
               {/* Shield/Emblem */}
-              <div className="relative w-9 h-9 flex-shrink-0">
-                <div className="w-9 h-9 bg-[var(--color-primary)] rounded-[8px] flex items-center justify-center group-hover:bg-[var(--color-primary-dark)] transition-colors duration-200">
-                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                    <path d="M10 2L3 5.5V10C3 13.87 6.16 17.49 10 18.5C13.84 17.49 17 13.87 17 10V5.5L10 2Z" fill="white" fillOpacity="0.9"/>
-                    <path d="M7 10L9 12L13 8" stroke="#0B5ED7" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+              <div className="relative w-8 h-8 flex-shrink-0">
+                <div className="w-8 h-8 bg-[var(--color-primary)] rounded-[8px] flex items-center justify-center group-hover:bg-[var(--color-primary-dark)] transition-all duration-300 shadow-[0_2px_8px_rgba(11,94,215,0.2)]">
+                  <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    <path
+                      d="M10 2L3 5.5V10C3 13.87 6.16 17.49 10 18.5C13.84 17.49 17 13.87 17 10V5.5L10 2Z"
+                      fill="white"
+                      fillOpacity="0.9"
+                    />
+                    <path
+                      d="M7 10L9 12L13 8"
+                      stroke="#0B5ED7"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                 </div>
               </div>
               <div className="leading-tight">
-                <div className={`text-base font-bold tracking-tight font-display transition-colors ${isScrolled || isMobileOpen ? "text-[var(--color-text)]" : "text-[var(--color-text)]"}`}>
+                <div className="text-sm font-bold tracking-tight font-display text-[var(--color-text)] flex items-center gap-1.5">
                   {SITE.name}
+                  {/* Glowing Status Dot */}
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  </span>
                 </div>
-                <div className="text-[10px] text-[var(--color-text-muted)] font-medium leading-none hidden sm:block">
-                  Govt. Research Institute & Incubator
+                <div className="text-[9px] text-[var(--color-text-muted)] font-semibold leading-none hidden sm:block">
+                  Govt. Research Institute &amp; TBI
                 </div>
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
+            {/* Desktop Navigation with Magnetic Sliding Box */}
             <nav
-              className="hidden lg:flex items-center gap-1"
+              className="hidden lg:flex items-center gap-1 relative"
               aria-label="Primary Navigation"
+              onMouseLeave={() => setHoveredIdx(null)}
             >
-              {NAV_LINKS.slice(0, 8).map((link) => {
+              {NAV_LINKS.slice(0, 8).map((link, idx) => {
                 const sectionId = link.href.replace("#", "");
                 const isActive = activeSection === sectionId;
                 return (
                   <button
                     key={link.href}
                     onClick={() => handleNavClick(link.href)}
-                    className={`relative px-3 py-2 text-[13px] font-medium rounded-[8px] transition-all duration-200 ${
+                    onMouseEnter={() => setHoveredIdx(idx)}
+                    className={`relative px-3.5 py-1.5 text-[13px] font-semibold rounded-[8px] transition-colors duration-300 ${
                       isActive
-                        ? "text-[var(--color-primary)] bg-blue-50"
-                        : "text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)]"
+                        ? "text-[var(--color-primary)]"
+                        : "text-[var(--color-text-secondary)] hover:text-[var(--color-text)]"
                     }`}
                     aria-current={isActive ? "page" : undefined}
                   >
-                    {link.label}
-                    {isActive && (
+                    {/* Hover Sliding Background */}
+                    {hoveredIdx === idx && (
                       <motion.div
-                        layoutId="activeNav"
-                        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-3 h-0.5 bg-[var(--color-primary)] rounded-full"
+                        layoutId="navHoverBg"
+                        className="absolute inset-0 bg-[var(--color-primary)]/5 rounded-[8px] -z-10"
+                        transition={{ type: "spring", stiffness: 350, damping: 28 }}
+                      />
+                    )}
+
+                    {/* Content */}
+                    <span className="relative z-10">{link.label}</span>
+
+                    {/* Active Bottom Dot */}
+                    {isActive && (
+                      <motion.span
+                        layoutId="activeNavDot"
+                        className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1.5 h-1.5 bg-[var(--color-primary)] rounded-full"
+                        transition={{ type: "spring", stiffness: 300, damping: 25 }}
                       />
                     )}
                   </button>
@@ -119,15 +162,15 @@ export default function Header() {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => handleNavClick("#contact")}
-                className="hidden sm:flex btn-primary text-sm py-2 px-4"
+                className="hidden sm:flex btn-primary text-[13px] font-semibold py-1.5 px-4 h-9 rounded-[8px] shadow-sm hover:shadow-md transition-all duration-300"
                 aria-label="Apply for Incubation"
               >
                 Apply for Incubation
-                <ChevronRight size={14} />
+                <ChevronRight size={13} />
               </button>
 
               <button
-                className="lg:hidden p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-surface)] rounded-[8px] transition-colors"
+                className="lg:hidden p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-primary)]/5 rounded-[8px] transition-colors"
                 onClick={() => setIsMobileOpen(!isMobileOpen)}
                 aria-label={isMobileOpen ? "Close menu" : "Open menu"}
                 aria-expanded={isMobileOpen}
@@ -148,30 +191,38 @@ export default function Header() {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            transition={{ duration: 0.18 }}
-            className="fixed inset-x-0 top-16 z-40 bg-white border-b border-[var(--color-border)] shadow-lg lg:hidden"
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="fixed inset-x-0 top-20 z-40 px-4 lg:hidden"
             aria-label="Mobile Navigation"
           >
-            <nav className="container-site py-4 flex flex-col gap-1">
-              {NAV_LINKS.map((link) => (
-                <button
-                  key={link.href}
-                  onClick={() => handleNavClick(link.href)}
-                  className="text-left px-4 py-3 text-sm font-medium text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:bg-blue-50 rounded-[8px] transition-colors"
-                >
-                  {link.label}
-                </button>
-              ))}
+            <div className="bg-white/95 backdrop-blur-md border border-[var(--color-border)] rounded-[14px] shadow-xl p-4 flex flex-col gap-1">
+              {NAV_LINKS.map((link) => {
+                const sectionId = link.href.replace("#", "");
+                const isActive = activeSection === sectionId;
+                return (
+                  <button
+                    key={link.href}
+                    onClick={() => handleNavClick(link.href)}
+                    className={`text-left px-4 py-2.5 text-sm font-semibold rounded-[8px] transition-colors ${
+                      isActive
+                        ? "text-[var(--color-primary)] bg-[var(--color-primary)]/5"
+                        : "text-[var(--color-text-secondary)] hover:text-[var(--color-primary)] hover:bg-[var(--color-surface)]"
+                    }`}
+                  >
+                    {link.label}
+                  </button>
+                );
+              })}
               <div className="pt-3 mt-2 border-t border-[var(--color-border)]">
                 <button
                   onClick={() => handleNavClick("#contact")}
-                  className="btn-primary w-full justify-center"
+                  className="btn-primary w-full justify-center text-sm py-2 px-4 rounded-[8px]"
                 >
                   Apply for Incubation
                   <ChevronRight size={14} />
                 </button>
               </div>
-            </nav>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
