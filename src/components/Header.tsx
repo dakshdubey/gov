@@ -53,10 +53,10 @@ export default function Header() {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-8 left-0 right-0 z-40 transition-all duration-500 ${
           isScrolled
-            ? "py-3"
-            : "py-5"
+            ? "py-2"
+            : "py-4"
         }`}
         role="banner"
       >

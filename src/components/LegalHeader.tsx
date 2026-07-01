@@ -7,7 +7,7 @@ import Link from "next/link";
 export default function LegalHeader() {
   return (
     <header
-      className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-[var(--color-border)] shadow-sm"
+      className="fixed top-8 left-0 right-0 z-40 bg-white/95 backdrop-blur-md border-b border-[var(--color-border)] shadow-sm"
       role="banner"
     >
       <div className="container-site">

@@ -137,7 +137,7 @@ export default function TermsOfUse() {
     <div className="min-h-screen bg-white">
       {/* Page Header */}
       <div className="border-b border-[var(--color-border)] bg-[var(--color-surface)]">
-        <div className="container-site py-10 pt-24">
+        <div className="container-site py-10 pt-32">
           <Link
             href="/"
             className="inline-flex items-center gap-2 text-sm text-[var(--color-text-muted)] hover:text-[var(--color-primary)] transition-colors mb-6"

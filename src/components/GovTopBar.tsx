@@ -11,7 +11,7 @@ export default function GovTopBar() {
 
   return (
     <div
-      className="bg-[#0b1329] text-white border-b border-white/10 text-[11px] font-medium py-1.5"
+      className="fixed top-0 left-0 right-0 z-50 bg-[#0b1329] text-white border-b border-white/10 text-[11px] font-medium h-8 flex items-center"
       role="complementary"
       aria-label="Government of India and Karnataka official portal header"
     >
