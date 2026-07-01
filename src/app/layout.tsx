@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Outfit } from "next/font/google";
 import "./globals.css";
-import Header from "@/components/Header";
-import Footer from "@/components/Footer";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -67,16 +65,9 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html
-      lang="en"
-      className={`${inter.variable} ${outfit.variable}`}
-    >
+    <html lang="en" className={`${inter.variable} ${outfit.variable}`}>
       <body className="min-h-screen flex flex-col bg-white text-[var(--color-text)] antialiased">
-        <Header />
-        <main className="flex-1" id="main-content">
-          {children}
-        </main>
-        <Footer />
+        {children}
       </body>
     </html>
   );

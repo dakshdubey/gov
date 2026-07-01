@@ -352,6 +352,72 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ===================================================
+   Premium Micro-Animation Utilities
+   =================================================== */
+
+/* Text shimmer effect for section labels */
+.text-shimmer {
+  background: linear-gradient(
+    90deg,
+    var(--color-primary) 0%,
+    var(--color-accent) 40%,
+    var(--color-primary) 80%
+  );
+  background-size: 200% auto;
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Stagger fade-up helpers (for JS-less fallback) */
+.fade-up {
+  animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.fade-up-delay-1 { animation-delay: 0.1s; }
+.fade-up-delay-2 { animation-delay: 0.2s; }
+.fade-up-delay-3 { animation-delay: 0.3s; }
+
+/* Card with stronger lift effect for premium feel */
+.card-lift {
+  transition: box-shadow 0.3s ease, transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease;
+}
+.card-lift:hover {
+  transform: translateY(-4px) scale(1.005);
+  box-shadow: 0 16px 48px 0 rgb(11 94 215 / 0.1), 0 4px 12px 0 rgb(0 0 0 / 0.06);
+  border-color: rgb(11 94 215 / 0.18);
+}
+
+/* Animated left-border accent for stat/info cards */
+.accent-bar {
+  position: relative;
+}
+.accent-bar::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 3px;
+  background: var(--color-primary);
+  border-radius: 999px;
+  transition: top 0.3s ease, bottom 0.3s ease;
+}
+.accent-bar:hover::before {
+  top: 4px;
+  bottom: 4px;
+}
+
+/* Pulsing dot indicator */
+@keyframes dot-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.6); opacity: 0.5; }
+}
+.dot-pulse {
+  animation: dot-pulse 2s ease-in-out infinite;
+}
+
+/* ===================================================
    Print Styles
    =================================================== */
 

@@ -79,7 +79,7 @@ export default function Services() {
                 initial={{ opacity: 0, y: 24 }}
                 animate={inView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: 0.05 * i }}
-                className="card group p-6 cursor-default"
+                className="card card-lift group p-6 cursor-default"
                 tabIndex={0}
                 role="article"
                 aria-label={service.title}

@@ -1,10 +1,10 @@
 "use client";
 
 import { useRef, useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import {
   Rocket, Banknote, ScrollText, Users, TrendingUp, Shield, FileText, BarChart3,
-  ArrowRight, CheckCircle2
+  ArrowRight, CheckCircle2, X, ChevronLeft, ChevronRight, Check, Award
 } from "lucide-react";
 import { INCUBATION_BENEFITS, INCUBATION_STAGES } from "@/lib/data";
 
@@ -25,9 +25,116 @@ function useInView(threshold = 0.08) {
   return { ref, inView };
 }
 
+const SECTORS = [
+  "AI & Digital Health Diagnostics",
+  "Digital Therapeutics (CBT/Therapy)",
+  "Pharmacogenomics & Precision Medicine",
+  "Medical Imaging & MRI Preprocessing",
+  "Sensory & Assistive Devices",
+  "Forensic & Computational Psychiatry",
+  "Other Healthcare Technology",
+];
+
+const STAGES = [
+  "Ideation / Concept Stage",
+  "Proof of Concept / Prototype Developed",
+  "Clinically Validated Product",
+  "Scaling / Revenue-Generating",
+];
+
+const GRANTS = [
+  "DST Seed Support Scheme (up to ₹25 Lakhs)",
+  "BIRAC NIDHI-PRAYAS (up to ₹10 Lakhs)",
+  "BIRAC BIG (Biotechnology Ignition Grant - up to ₹50 Lakhs)",
+  "MEITY Hub Grant Assistance (up to ₹20 Lakhs)",
+  "Angel / Private Equity Match Program",
+  "Bootstrapped / No Grant Assistance Required",
+];
+
+const LAB_RESOURCES = [
+  "Neuroimaging Suite (3T MRI, fMRI)",
+  "Electrophysiology Labs (EEG/ERP)",
+  "Molecular Biology & Genomics Lab",
+  "HPC (High-Performance Computing) Cluster",
+  "Shared Co-working Space Hot-desks",
+  "Access to Patient Cohorts & Clinicians",
+];
+
 export default function Incubator() {
   const { ref, inView } = useInView(0.06);
   const [activeStage, setActiveStage] = useState(0);
+
+  // Multi-step Application Portal States
+  const [isApplyModalOpen, setIsApplyModalOpen] = useState(false);
+  const [currentStep, setCurrentStep] = useState(1);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  // Form Fields
+  const [startupName, setStartupName] = useState("");
+  const [sector, setSector] = useState(SECTORS[0]);
+  const [pitch, setPitch] = useState("");
+  
+  const [founderName, setFounderName] = useState("");
+  const [teamSize, setTeamSize] = useState("1-2 members");
+  const [background, setBackground] = useState("");
+
+  const [currentStage, setCurrentStage] = useState(STAGES[0]);
+  const [targetGrant, setTargetGrant] = useState(GRANTS[0]);
+  const [selectedLabs, setSelectedLabs] = useState<string[]>([]);
+
+  const [errors, setErrors] = useState<Record<string, string>>({});
+
+  const handleLabToggle = (lab: string) => {
+    setSelectedLabs((prev) =>
+      prev.includes(lab) ? prev.filter((l) => l !== lab) : [...prev, lab]
+    );
+  };
+
+  const validateStep = (step: number): boolean => {
+    const errs: Record<string, string> = {};
+    if (step === 1) {
+      if (!startupName.trim()) errs.startupName = "Startup name is required";
+      if (!pitch.trim() || pitch.length < 15) errs.pitch = "Please provide a brief pitch (min 15 chars)";
+    } else if (step === 2) {
+      if (!founderName.trim()) errs.founderName = "Founder's name is required";
+      if (!background.trim()) errs.background = "Please describe academic/clinical backgrounds";
+    }
+    setErrors(errs);
+    return Object.keys(errs).length === 0;
+  };
+
+  const handleNextStep = () => {
+    if (validateStep(currentStep)) {
+      setCurrentStep((prev) => Math.min(3, prev + 1));
+    }
+  };
+
+  const handlePrevStep = () => {
+    setCurrentStep((prev) => Math.max(1, prev - 1));
+  };
+
+  const handleOpenModal = () => {
+    setStartupName("");
+    setPitch("");
+    setFounderName("");
+    setBackground("");
+    setSelectedLabs([]);
+    setErrors({});
+    setCurrentStep(1);
+    setSubmitted(false);
+    setSubmitting(false);
+    setIsApplyModalOpen(true);
+  };
+
+  const handleApplicationSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitting(true);
+    // Simulate Birac/DST incubator processing sequence
+    await new Promise((resolve) => setTimeout(resolve, 1800));
+    setSubmitting(false);
+    setSubmitted(true);
+  };
 
   return (
     <section
@@ -183,7 +290,7 @@ export default function Incubator() {
             </button>
             {activeStage === INCUBATION_STAGES.length - 1 ? (
               <button
-                onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+                onClick={handleOpenModal}
                 className="btn-primary text-sm py-2 px-4"
               >
                 Apply Now <ArrowRight size={14} />
@@ -231,7 +338,7 @@ export default function Incubator() {
             </div>
             <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
               <button
-                onClick={() => document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" })}
+                onClick={handleOpenModal}
                 className="bg-white text-[var(--color-primary)] font-semibold text-sm px-5 py-2.5 rounded-[8px] flex items-center gap-2 hover:bg-blue-50 transition-colors"
               >
                 Apply for Incubation <ArrowRight size={14} />
@@ -246,6 +353,290 @@ export default function Incubator() {
           </div>
         </motion.div>
       </div>
+
+      {/* Multi-step Application Modal */}
+      <AnimatePresence>
+        {isApplyModalOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-sm">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 10 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 10 }}
+              className="relative w-full max-w-xl bg-white rounded-[16px] shadow-xl overflow-hidden border border-[var(--color-border)]"
+            >
+              
+              {/* Header */}
+              <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-border)] bg-[var(--color-surface)]">
+                <div className="flex items-center gap-2">
+                  <Award className="text-[var(--color-primary)]" size={18} />
+                  <h3 className="text-sm font-bold text-[var(--color-text)]">Incubator Application Portal</h3>
+                </div>
+                <button
+                  onClick={() => setIsApplyModalOpen(false)}
+                  className="p-1 text-[var(--color-text-muted)] hover:text-[var(--color-text)] rounded-[6px] hover:bg-[var(--color-border)]/30 transition-colors"
+                  aria-label="Close application modal"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+
+              {/* Stepper Indicator */}
+              {!submitted && (
+                <div className="px-6 py-3 border-b border-[var(--color-border)] bg-[var(--color-surface)]/40 flex items-center justify-between text-[11px] font-semibold text-[var(--color-text-muted)]">
+                  <div className="flex items-center gap-1.5">
+                    <span className={`w-5 h-5 rounded-full flex items-center justify-center border ${currentStep >= 1 ? "bg-[var(--color-primary)] text-white border-[var(--color-primary)]" : "border-[var(--color-border)] bg-white"}`}>1</span>
+                    <span className={currentStep === 1 ? "text-[var(--color-primary)]" : ""}>Startup Info</span>
+                  </div>
+                  <div className="w-8 h-px bg-[var(--color-border)]" />
+                  <div className="flex items-center gap-1.5">
+                    <span className={`w-5 h-5 rounded-full flex items-center justify-center border ${currentStep >= 2 ? "bg-[var(--color-primary)] text-white border-[var(--color-primary)]" : "border-[var(--color-border)] bg-white"}`}>2</span>
+                    <span className={currentStep === 2 ? "text-[var(--color-primary)]" : ""}>Founders</span>
+                  </div>
+                  <div className="w-8 h-px bg-[var(--color-border)]" />
+                  <div className="flex items-center gap-1.5">
+                    <span className={`w-5 h-5 rounded-full flex items-center justify-center border ${currentStep >= 3 ? "bg-[var(--color-primary)] text-white border-[var(--color-primary)]" : "border-[var(--color-border)] bg-white"}`}>3</span>
+                    <span className={currentStep === 3 ? "text-[var(--color-primary)]" : ""}>Needs</span>
+                  </div>
+                </div>
+              )}
+
+              {/* Content Body */}
+              <div className="p-6">
+                {submitted ? (
+                  <div className="py-8 text-center">
+                    <div className="w-14 h-14 bg-green-50 border border-green-200 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600">
+                      <Check size={24} />
+                    </div>
+                    <h4 className="text-base font-bold text-[var(--color-text)] mb-2">Application Submitted successfully!</h4>
+                    <p className="text-xs text-[var(--color-text-secondary)] leading-relaxed max-w-sm mx-auto mb-6">
+                      Thank you for applying to DIMHANS TBI Cohort 8. Your startup <span className="font-semibold">{startupName}</span> has been entered into the scientific review sequence. We will communicate our evaluation committee results within 30 days.
+                    </p>
+                    <button
+                      onClick={() => setIsApplyModalOpen(false)}
+                      className="btn-primary text-xs py-2 px-5"
+                    >
+                      Return to Portal
+                    </button>
+                  </div>
+                ) : (
+                  <form onSubmit={handleApplicationSubmit} className="space-y-4">
+                    {/* STEP 1: Startup details */}
+                    {currentStep === 1 && (
+                      <div className="space-y-4">
+                        <div>
+                          <label htmlFor="startup-name" className="block text-xs font-semibold text-[var(--color-text-secondary)] mb-1.5">
+                            Startup / Venture Name <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            id="startup-name"
+                            type="text"
+                            value={startupName}
+                            placeholder="E.g. SynapseMed Diagnostics"
+                            onChange={(e) => setStartupName(e.target.value)}
+                            className={`w-full px-3 py-2 text-xs border rounded-[8px] focus:outline-none focus:border-[var(--color-primary)] ${errors.startupName ? "border-red-400" : "border-[var(--color-border)]"}`}
+                          />
+                          {errors.startupName && <p className="text-[10px] text-red-500 mt-1">{errors.startupName}</p>}
+                        </div>
+
+                        <div>
+                          <label htmlFor="startup-sector" className="block text-xs font-semibold text-[var(--color-text-secondary)] mb-1.5">
+                            Primary Healthcare Sector <span className="text-red-500">*</span>
+                          </label>
+                          <select
+                            id="startup-sector"
+                            value={sector}
+                            onChange={(e) => setSector(e.target.value)}
+                            className="w-full px-3 py-2 text-xs border border-[var(--color-border)] rounded-[8px] focus:outline-none focus:border-[var(--color-primary)] bg-white appearance-none"
+                          >
+                            {SECTORS.map((s) => (
+                              <option key={s} value={s}>{s}</option>
+                            ))}
+                          </select>
+                        </div>
+
+                        <div>
+                          <label htmlFor="startup-pitch" className="block text-xs font-semibold text-[var(--color-text-secondary)] mb-1.5">
+                            One-Line Pitch / Abstract (Minimum 15 characters) <span className="text-red-500">*</span>
+                          </label>
+                          <textarea
+                            id="startup-pitch"
+                            rows={3}
+                            value={pitch}
+                            placeholder="Describe the medical problem you are solving and your core technology approach..."
+                            onChange={(e) => setPitch(e.target.value)}
+                            className={`w-full px-3 py-2 text-xs border rounded-[8px] resize-none focus:outline-none focus:border-[var(--color-primary)] ${errors.pitch ? "border-red-400" : "border-[var(--color-border)]"}`}
+                          />
+                          {errors.pitch && <p className="text-[10px] text-red-500 mt-1">{errors.pitch}</p>}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* STEP 2: Founders Details */}
+                    {currentStep === 2 && (
+                      <div className="space-y-4">
+                        <div>
+                          <label htmlFor="founder-name" className="block text-xs font-semibold text-[var(--color-text-secondary)] mb-1.5">
+                            Lead Founder Full Name <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            id="founder-name"
+                            type="text"
+                            value={founderName}
+                            placeholder="E.g. Dr. Priyanjali Rao"
+                            onChange={(e) => setFounderName(e.target.value)}
+                            className={`w-full px-3 py-2 text-xs border rounded-[8px] focus:outline-none focus:border-[var(--color-primary)] ${errors.founderName ? "border-red-400" : "border-[var(--color-border)]"}`}
+                          />
+                          {errors.founderName && <p className="text-[10px] text-red-500 mt-1">{errors.founderName}</p>}
+                        </div>
+
+                        <div>
+                          <label htmlFor="team-size" className="block text-xs font-semibold text-[var(--color-text-secondary)] mb-1.5">
+                            Current Core Team Size
+                          </label>
+                          <select
+                            id="team-size"
+                            value={teamSize}
+                            onChange={(e) => setTeamSize(e.target.value)}
+                            className="w-full px-3 py-2 text-xs border border-[var(--color-border)] rounded-[8px] focus:outline-none focus:border-[var(--color-primary)] bg-white appearance-none"
+                          >
+                            <option value="1-2 members">1-2 members (Sole founder / early duo)</option>
+                            <option value="3-5 members">3-5 members (Cross-functional team)</option>
+                            <option value="6-10 members">6-10 members (Growing enterprise)</option>
+                            <option value="10+ members">10+ members (Scale-up team)</option>
+                          </select>
+                        </div>
+
+                        <div>
+                          <label htmlFor="founder-bg" className="block text-xs font-semibold text-[var(--color-text-secondary)] mb-1.5">
+                            Team Academic & Clinical Background <span className="text-red-500">*</span>
+                          </label>
+                          <textarea
+                            id="founder-bg"
+                            rows={3}
+                            value={background}
+                            placeholder="Describe the medical, clinical, or software engineering expertise of your core team members..."
+                            onChange={(e) => setBackground(e.target.value)}
+                            className={`w-full px-3 py-2 text-xs border rounded-[8px] resize-none focus:outline-none focus:border-[var(--color-primary)] ${errors.background ? "border-red-400" : "border-[var(--color-border)]"}`}
+                          />
+                          {errors.background && <p className="text-[10px] text-red-500 mt-1">{errors.background}</p>}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* STEP 3: Stage & Needs details */}
+                    {currentStep === 3 && (
+                      <div className="space-y-4">
+                        <div className="grid sm:grid-cols-2 gap-4">
+                          <div>
+                            <label htmlFor="startup-stage" className="block text-xs font-semibold text-[var(--color-text-secondary)] mb-1.5">
+                              Startup Stage
+                            </label>
+                            <select
+                              id="startup-stage"
+                              value={currentStage}
+                              onChange={(e) => setCurrentStage(e.target.value)}
+                              className="w-full px-3 py-2 text-xs border border-[var(--color-border)] rounded-[8px] focus:outline-none focus:border-[var(--color-primary)] bg-white appearance-none"
+                            >
+                              {STAGES.map((s) => (
+                                <option key={s} value={s}>{s}</option>
+                              ))}
+                            </select>
+                          </div>
+
+                          <div>
+                            <label htmlFor="target-grant" className="block text-xs font-semibold text-[var(--color-text-secondary)] mb-1.5">
+                              Target Government Grant
+                            </label>
+                            <select
+                              id="target-grant"
+                              value={targetGrant}
+                              onChange={(e) => setTargetGrant(e.target.value)}
+                              className="w-full px-3 py-2 text-xs border border-[var(--color-border)] rounded-[8px] focus:outline-none focus:border-[var(--color-primary)] bg-white appearance-none"
+                            >
+                              {GRANTS.map((g) => (
+                                <option key={g} value={g}>{g}</option>
+                              ))}
+                            </select>
+                          </div>
+                        </div>
+
+                        {/* Lab resources checklists */}
+                        <div>
+                          <span className="block text-xs font-semibold text-[var(--color-text-secondary)] mb-2">
+                            Facility & Research Access Requirements (Select all that apply)
+                          </span>
+                          <div className="grid sm:grid-cols-2 gap-2">
+                            {LAB_RESOURCES.map((lab) => (
+                              <label
+                                key={lab}
+                                className="flex items-center gap-2 p-2 border border-[var(--color-border)] rounded-[6px] hover:bg-[var(--color-surface)] cursor-pointer text-[10px] font-semibold text-[var(--color-text-secondary)]"
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={selectedLabs.includes(lab)}
+                                  onChange={() => handleLabToggle(lab)}
+                                  className="w-3.5 h-3.5 border-[var(--color-border)] text-[var(--color-primary)] rounded focus:ring-[var(--color-primary)]/15"
+                                />
+                                <span>{lab}</span>
+                              </label>
+                            ))}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Actions buttons */}
+                    <div className="flex gap-2 justify-end pt-3 border-t border-[var(--color-border)]">
+                      {currentStep > 1 && (
+                        <button
+                          type="button"
+                          onClick={handlePrevStep}
+                          className="px-4 py-2 border border-[var(--color-border)] rounded-[8px] text-xs font-semibold text-[var(--color-text-secondary)] hover:bg-[var(--color-surface)] flex items-center gap-1"
+                        >
+                          <ChevronLeft size={12} /> Back
+                        </button>
+                      )}
+                      
+                      <button
+                        type="button"
+                        onClick={() => setIsApplyModalOpen(false)}
+                        className="px-4 py-2 border border-[var(--color-border)] rounded-[8px] text-xs font-semibold text-[var(--color-text-muted)] hover:bg-[var(--color-surface)] mr-auto"
+                      >
+                        Close
+                      </button>
+
+                      {currentStep < 3 ? (
+                        <button
+                          type="button"
+                          onClick={handleNextStep}
+                          className="btn-primary text-xs py-2 px-5 flex items-center gap-1"
+                        >
+                          Continue <ChevronRight size={12} />
+                        </button>
+                      ) : (
+                        <button
+                          type="submit"
+                          disabled={submitting}
+                          className="btn-primary text-xs py-2 px-6 justify-center disabled:opacity-60"
+                        >
+                          {submitting ? (
+                            <>
+                              <span className="w-3.5 h-3.5 border-2 border-white/30 border-t-white rounded-full animate-spin mr-1" />
+                              Submitting...
+                            </>
+                          ) : (
+                            "Submit Application"
+                          )}
+                        </button>
+                      )}
+                    </div>
+                  </form>
+                )}
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
     </section>
   );
 }

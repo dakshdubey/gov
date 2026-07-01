@@ -148,7 +148,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-4">
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-white/80 mb-4 pb-2 border-b border-white/10">
               Quick Links
             </h3>
             <ul className="space-y-2.5">
@@ -167,7 +167,7 @@ export default function Footer() {
 
           {/* Research */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-4">
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-white/80 mb-4 pb-2 border-b border-white/10">
               Research
             </h3>
             <ul className="space-y-2.5">
@@ -186,7 +186,7 @@ export default function Footer() {
 
           {/* Incubation */}
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-widest text-white/40 mb-4">
+            <h3 className="text-xs font-semibold uppercase tracking-widest text-white/80 mb-4 pb-2 border-b border-white/10">
               Incubation
             </h3>
             <ul className="space-y-2.5">
@@ -218,17 +218,22 @@ export default function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-white/10">
         <div className="container-site py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-white/40 text-center sm:text-left">
+          <p className="text-xs text-white/60 text-center sm:text-left">
             © {currentYear} {SITE.fullName}. All rights reserved. A Government of Karnataka Institution.
           </p>
           <div className="flex items-center gap-4">
-            {["Privacy Policy", "Terms of Use", "RTI", "Accessibility"].map((item) => (
+            {[
+              { label: "Privacy Policy", href: "/privacy-policy" },
+              { label: "Terms of Use",   href: "/terms-of-use" },
+              { label: "RTI",            href: "/rti" },
+              { label: "Accessibility",  href: "/accessibility" },
+            ].map((item) => (
               <a
-                key={item}
-                href="#"
-                className="text-xs text-white/40 hover:text-white/70 transition-colors"
+                key={item.label}
+                href={item.href}
+                className="text-xs text-white/60 hover:text-white transition-colors"
               >
-                {item}
+                {item.label}
               </a>
             ))}
           </div>
