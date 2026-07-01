@@ -1,6 +1,7 @@
 import Hero from "@/components/Hero";
 import TrustBanner from "@/components/TrustBanner";
 import About from "@/components/About";
+import LeadershipDesk from "@/components/LeadershipDesk";
 import Services from "@/components/Services";
 import ResearchInnovation from "@/components/ResearchInnovation";
 import Incubator from "@/components/Incubator";
@@ -18,6 +19,7 @@ export default function Home() {
       <Hero />
       <TrustBanner />
       <About />
+      <LeadershipDesk />
       <Services />
       <ResearchInnovation />
       <Incubator />

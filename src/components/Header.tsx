@@ -80,34 +80,37 @@ export default function Header() {
             >
               {/* Shield/Emblem */}
               <div className="relative w-8 h-8 flex-shrink-0">
-                <div className="w-8 h-8 bg-[var(--color-primary)] rounded-[8px] flex items-center justify-center group-hover:bg-[var(--color-primary-dark)] transition-all duration-300 shadow-[0_2px_8px_rgba(11,94,215,0.2)]">
+                <div className="w-8 h-8 bg-[#114B8B] border border-amber-400 rounded-[8px] flex items-center justify-center group-hover:bg-[var(--color-primary-dark)] transition-all duration-300 shadow-[0_2px_8px_rgba(17,75,139,0.2)]">
+                  {/* National Emblem stylized Ashoka Chakra */}
                   <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                    <path
-                      d="M10 2L3 5.5V10C3 13.87 6.16 17.49 10 18.5C13.84 17.49 17 13.87 17 10V5.5L10 2Z"
-                      fill="white"
-                      fillOpacity="0.9"
-                    />
-                    <path
-                      d="M7 10L9 12L13 8"
-                      stroke="#0B5ED7"
-                      strokeWidth="1.6"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
+                    <circle cx="10" cy="10" r="8" stroke="#FFE082" strokeWidth="1.5" />
+                    <circle cx="10" cy="10" r="3" stroke="#FFE082" strokeWidth="1.2" />
+                    {[...Array(8)].map((_, i) => (
+                      <line
+                        key={i}
+                        x1="10"
+                        y1="10"
+                        x2={10 + 8 * Math.cos((i * Math.PI) / 4)}
+                        y2={10 + 8 * Math.sin((i * Math.PI) / 4)}
+                        stroke="#FFE082"
+                        strokeWidth="1"
+                      />
+                    ))}
                   </svg>
                 </div>
               </div>
               <div className="leading-tight">
                 <div className="text-sm font-bold tracking-tight font-display text-[var(--color-text)] flex items-center gap-1.5">
                   {SITE.name}
-                  {/* Glowing Status Dot */}
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
+                  {/* National Flag Accent bar inside header */}
+                  <span className="flex h-1.5 w-6 rounded-full overflow-hidden border border-slate-200">
+                    <span className="w-1/3 bg-[#FF9933]"></span>
+                    <span className="w-1/3 bg-white"></span>
+                    <span className="w-1/3 bg-[#128807]"></span>
                   </span>
                 </div>
-                <div className="text-[9px] text-[var(--color-text-muted)] font-semibold leading-none hidden sm:block">
-                  Govt. Research Institute &amp; TBI
+                <div className="text-[9px] text-[var(--color-text-muted)] font-bold uppercase tracking-wider leading-none hidden sm:block">
+                  Govt. Deemed University &amp; TBI
                 </div>
               </div>
             </Link>

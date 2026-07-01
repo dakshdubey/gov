@@ -1,3 +1,4 @@
+import GovTopBar from "@/components/GovTopBar";
 import LegalHeader from "@/components/LegalHeader";
 import Footer from "@/components/Footer";
 
@@ -8,9 +9,11 @@ import Footer from "@/components/Footer";
 export default function LegalLayout({ children }: { children: React.ReactNode }) {
   return (
     <>
+      <GovTopBar />
       <LegalHeader />
       <main id="main-content">{children}</main>
       <Footer />
     </>
   );
 }
+

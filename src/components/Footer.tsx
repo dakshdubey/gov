@@ -215,17 +215,43 @@ export default function Footer() {
         </div>
       </div>
 
+      {/* Official Gov Directory Links */}
+      <div className="border-t border-white/5 bg-black/20 py-4">
+        <div className="container-site text-center">
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-[11px] text-white/40">
+            <span className="font-semibold text-white/50 uppercase tracking-wider">Official Portals:</span>
+            <a href="https://www.india.gov.in" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">National Portal of India</a>
+            <span>•</span>
+            <a href="https://karnataka.gov.in" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Karnataka State Portal</a>
+            <span>•</span>
+            <a href="https://www.startupindia.gov.in" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Startup India</a>
+            <span>•</span>
+            <a href="https://birac.nic.in" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">BIRAC</a>
+            <span>•</span>
+            <a href="https://dst.gov.in" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">DST India</a>
+            <span>•</span>
+            <a href="https://www.niti.gov.in" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">NITI Aayog</a>
+          </div>
+        </div>
+      </div>
+
       {/* Bottom Bar */}
-      <div className="border-t border-white/10">
-        <div className="container-site py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-xs text-white/60 text-center sm:text-left">
-            © {currentYear} {SITE.fullName}. All rights reserved. A Government of Karnataka Institution.
-          </p>
-          <div className="flex items-center gap-4">
+      <div className="border-t border-white/10 bg-black/40">
+        <div className="container-site py-5 flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row items-center gap-3 text-center sm:text-left">
+            {/* Satyamev Jayate Text Emblem */}
+            <div className="border border-white/20 px-2 py-0.5 rounded-[4px] text-[9px] font-bold tracking-widest text-white/70 uppercase">
+              सತ್ಯಮೇವ ಜಯತೇ | SATYAMEVA JAYATE
+            </div>
+            <p className="text-xs text-white/60">
+              © {currentYear} {SITE.fullName}. All rights reserved. A Government of Karnataka Deemed University.
+            </p>
+          </div>
+          <div className="flex flex-wrap justify-center gap-4">
             {[
               { label: "Privacy Policy", href: "/privacy-policy" },
               { label: "Terms of Use",   href: "/terms-of-use" },
-              { label: "RTI",            href: "/rti" },
+              { label: "RTI Compliance", href: "/rti" },
               { label: "Accessibility",  href: "/accessibility" },
             ].map((item) => (
               <a
