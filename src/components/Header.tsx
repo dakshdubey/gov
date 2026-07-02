@@ -165,7 +165,7 @@ export default function Header() {
             <div className="flex items-center gap-3">
               <button
                 onClick={() => handleNavClick("#contact")}
-                className="hidden sm:flex btn-primary text-[13px] font-semibold py-1.5 px-4 h-9 rounded-[8px] shadow-sm hover:shadow-md transition-all duration-300"
+                className="hidden md:flex btn-primary text-[13px] font-semibold py-1.5 px-4 h-9 rounded-[8px] shadow-sm hover:shadow-md transition-all duration-300"
                 aria-label="Apply for Incubation"
               >
                 Apply for Incubation

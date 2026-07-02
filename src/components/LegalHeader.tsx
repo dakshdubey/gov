@@ -58,9 +58,10 @@ export default function LegalHeader() {
             ))}
             <Link
               href="/"
-              className="ml-2 btn-primary text-sm py-2 px-4"
+              className="ml-2 btn-primary text-xs sm:text-sm py-1.5 px-3 sm:py-2 sm:px-4 flex-shrink-0"
             >
-              ← Back to Site
+              <span className="hidden sm:inline">← Back to Site</span>
+              <span className="sm:hidden">← Home</span>
             </Link>
           </nav>
         </div>
