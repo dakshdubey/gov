@@ -103,36 +103,43 @@ export default function Resources() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   transition={{ delay: 0.03 * i }}
-                  className="grid grid-cols-1 lg:grid-cols-[3fr,1.5fr,1fr,0.6fr,auto] gap-3 lg:gap-4 px-5 py-4 hover:bg-blue-50/40 transition-colors group"
+                  className="flex flex-col lg:grid lg:grid-cols-[3fr,1.5fr,1fr,0.6fr,auto] gap-3 lg:gap-4 px-5 py-4 hover:bg-blue-50/40 transition-colors group"
                   role="row"
                 >
+                  {/* Title & Authors */}
                   <div>
                     <p className="text-sm font-semibold text-[var(--color-text)] mb-0.5 group-hover:text-[var(--color-primary)] transition-colors leading-snug">
                       {pub.title}
                     </p>
                     <p className="text-xs text-[var(--color-text-muted)]">{pub.authors}</p>
                   </div>
-                  <div className="flex items-center">
-                    <span className="text-xs text-[var(--color-text-secondary)] italic">{pub.journal}</span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className={`px-2 py-0.5 text-[10px] font-semibold rounded-[4px] ${PUB_TYPE_COLORS[pub.type] ?? ""}`}>
-                      {pub.type}
-                    </span>
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-sm font-medium text-[var(--color-text-muted)]">{pub.year}</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <a
-                      href={`https://doi.org/${pub.doi}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-ghost text-xs py-1.5 px-2"
-                      aria-label={`Open DOI for ${pub.title}`}
-                    >
-                      DOI <ExternalLink size={10} />
-                    </a>
+
+                  {/* Meta items: Stacks as inline tags on mobile, grid columns on desktop */}
+                  <div className="flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-[var(--color-text-muted)] lg:contents">
+                    <div className="flex items-center">
+                      <span className="text-xs text-[var(--color-text-secondary)] italic">{pub.journal}</span>
+                    </div>
+                    <span className="text-[var(--color-border-dark)] lg:hidden">•</span>
+                    <div className="flex items-center">
+                      <span className={`px-2 py-0.5 text-[10px] font-semibold rounded-[4px] ${PUB_TYPE_COLORS[pub.type] ?? ""}`}>
+                        {pub.type}
+                      </span>
+                    </div>
+                    <span className="text-[var(--color-border-dark)] lg:hidden">•</span>
+                    <div className="flex items-center">
+                      <span className="text-xs font-medium">{pub.year}</span>
+                    </div>
+                    <div className="flex items-center gap-2 mt-2 lg:mt-0">
+                      <a
+                        href={`https://doi.org/${pub.doi}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="btn-ghost text-xs py-1 px-2 border border-transparent hover:border-[var(--color-primary)]/10"
+                        aria-label={`Open DOI for ${pub.title}`}
+                      >
+                        DOI <ExternalLink size={10} />
+                      </a>
+                    </div>
                   </div>
                 </motion.div>
               ))}

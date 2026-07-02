@@ -199,9 +199,9 @@ export default function Infrastructure() {
       {/* Booking Simulator Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/45 backdrop-blur-sm">
-          <div className="relative w-full max-w-lg bg-white rounded-[16px] shadow-xl overflow-hidden border border-[var(--color-border)]">
+          <div className="relative w-full max-w-lg bg-white rounded-[16px] shadow-xl overflow-hidden border border-[var(--color-border)] max-h-[90vh] flex flex-col">
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-border)] bg-[var(--color-surface)]">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-border)] bg-[var(--color-surface)] flex-shrink-0">
               <div className="flex items-center gap-2">
                 <CalendarCheck className="text-[var(--color-primary)]" size={18} />
                 <h3 className="text-sm font-bold text-[var(--color-text)]">Facility Booking Portal</h3>
@@ -216,7 +216,7 @@ export default function Infrastructure() {
             </div>
 
             {/* Content body */}
-            <div className="p-6">
+            <div className="p-6 overflow-y-auto flex-1">
               {bookingStatus === "success" ? (
                 <div className="py-8 text-center">
                   <div className="w-14 h-14 bg-green-50 border border-green-200 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600">

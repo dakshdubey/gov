@@ -36,8 +36,23 @@ const INDUSTRY_ICONS: Record<string, string> = {
 export default function Startups() {
   const { ref, inView } = useInView(0.08);
   const [current, setCurrent] = useState(0);
-  const VISIBLE = 3;
+  const [visibleCount, setVisibleCount] = useState(3);
   const MAX = STARTUPS.length;
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth < 640) {
+        setVisibleCount(1);
+      } else if (window.innerWidth < 1024) {
+        setVisibleCount(2);
+      } else {
+        setVisibleCount(3);
+      }
+    };
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   const prev = useCallback(() => setCurrent((c) => (c - 1 + MAX) % MAX), [MAX]);
   const next = useCallback(() => setCurrent((c) => (c + 1) % MAX), [MAX]);
@@ -49,7 +64,7 @@ export default function Startups() {
   }, [next]);
 
   // Get visible startups (circular)
-  const visible = Array.from({ length: VISIBLE }, (_, i) => STARTUPS[(current + i) % MAX]);
+  const visible = Array.from({ length: visibleCount }, (_, i) => STARTUPS[(current + i) % MAX]);
 
   return (
     <section

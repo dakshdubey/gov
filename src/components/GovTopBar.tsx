@@ -27,17 +27,18 @@ export default function GovTopBar() {
             <div className="w-[33%] h-full bg-[#128807]"></div>
           </div>
 
-          <span className="text-white/80 hover:text-white transition-colors cursor-default tracking-wide">
-            ಕರ್ನಾಟಕ ಸರ್ಕಾರ | <span className="font-semibold text-white">GOVERNMENT OF KARNATAKA</span>
+          <span className="text-white/80 hover:text-white transition-colors cursor-default tracking-wide text-[10px] sm:text-[11px] whitespace-nowrap">
+            <span className="inline sm:hidden">Govt. of Karnataka</span>
+            <span className="hidden sm:inline">ಕರ್ನಾಟಕ ಸರ್ಕಾರ | <span className="font-semibold text-white">GOVERNMENT OF KARNATAKA</span></span>
           </span>
-          <span className="text-white/30">|</span>
+          <span className="text-white/30 hidden sm:inline">|</span>
           <span className="text-white/60 hidden sm:inline">
             ಭಾರತ ಸರ್ಕಾರ | GOVERNMENT OF INDIA
           </span>
         </div>
 
         {/* Right Side: Accessibility Controls + Language Selector */}
-        <div className="flex items-center gap-4 text-white/70">
+        <div className="flex items-center gap-3 text-white/70">
           {/* Skip to Main Content */}
           <a
             href="#main-content"
@@ -80,10 +81,10 @@ export default function GovTopBar() {
           {/* Bilingual Language Selector */}
           <button
             onClick={toggleLang}
-            className="flex items-center gap-1.5 hover:text-white px-2 py-0.5 rounded border border-white/10 hover:border-white/20 transition-all font-semibold"
+            className="flex items-center gap-1 hover:text-white px-1.5 py-0.5 rounded border border-white/10 hover:border-white/20 transition-all text-[10px] font-semibold"
             aria-label="Select language"
           >
-            🌐 {lang === "EN" ? "ಕನ್ನಡ (Kannada)" : "English"}
+            🌐 {lang === "EN" ? "ಕನ್ನಡ" : "EN"}
           </button>
         </div>
       </div>

@@ -362,11 +362,11 @@ export default function Incubator() {
               initial={{ opacity: 0, scale: 0.95, y: 10 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 10 }}
-              className="relative w-full max-w-xl bg-white rounded-[16px] shadow-xl overflow-hidden border border-[var(--color-border)]"
+              className="relative w-full max-w-xl bg-white rounded-[16px] shadow-xl overflow-hidden border border-[var(--color-border)] max-h-[90vh] flex flex-col"
             >
               
               {/* Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-border)] bg-[var(--color-surface)]">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-[var(--color-border)] bg-[var(--color-surface)] flex-shrink-0">
                 <div className="flex items-center gap-2">
                   <Award className="text-[var(--color-primary)]" size={18} />
                   <h3 className="text-sm font-bold text-[var(--color-text)]">Incubator Application Portal</h3>
@@ -382,7 +382,7 @@ export default function Incubator() {
 
               {/* Stepper Indicator */}
               {!submitted && (
-                <div className="px-6 py-3 border-b border-[var(--color-border)] bg-[var(--color-surface)]/40 flex items-center justify-between text-[11px] font-semibold text-[var(--color-text-muted)]">
+                <div className="px-6 py-3 border-b border-[var(--color-border)] bg-[var(--color-surface)]/40 flex items-center justify-between text-[11px] font-semibold text-[var(--color-text-muted)] flex-shrink-0">
                   <div className="flex items-center gap-1.5">
                     <span className={`w-5 h-5 rounded-full flex items-center justify-center border ${currentStep >= 1 ? "bg-[var(--color-primary)] text-white border-[var(--color-primary)]" : "border-[var(--color-border)] bg-white"}`}>1</span>
                     <span className={currentStep === 1 ? "text-[var(--color-primary)]" : ""}>Startup Info</span>
@@ -401,7 +401,7 @@ export default function Incubator() {
               )}
 
               {/* Content Body */}
-              <div className="p-6">
+              <div className="p-6 overflow-y-auto flex-1">
                 {submitted ? (
                   <div className="py-8 text-center">
                     <div className="w-14 h-14 bg-green-50 border border-green-200 rounded-full flex items-center justify-center mx-auto mb-4 text-green-600">
