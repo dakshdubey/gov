@@ -3,30 +3,30 @@ import { Mail, Phone, MapPin, ExternalLink } from "lucide-react";
 import { SITE, NAV_LINKS } from "@/lib/data";
 
 const QUICK_LINKS = [
-  { label: "About DIMHANS", href: "#about" },
-  { label: "Research & Innovation", href: "#research" },
-  { label: "Technology Incubator", href: "#incubator" },
-  { label: "Infrastructure", href: "#infrastructure" },
-  { label: "Team", href: "#team" },
-  { label: "Startups Portfolio", href: "#startups" },
+  { label: "About DIMHANS", href: "/about" },
+  { label: "Research & Innovation", href: "/research" },
+  { label: "Technology Incubator", href: "/incubator" },
+  { label: "Infrastructure", href: "/infrastructure" },
+  { label: "Team", href: "/team" },
+  { label: "Startups Portfolio", href: "/startups" },
 ];
 
 const RESEARCH_LINKS = [
-  { label: "Neuroscience", href: "#research" },
-  { label: "AI & Machine Learning", href: "#research" },
-  { label: "Digital Diagnostics", href: "#research" },
-  { label: "Pharmacogenomics", href: "#research" },
-  { label: "Forensic Sciences", href: "#research" },
-  { label: "Publications", href: "#resources" },
+  { label: "Neuroscience", href: "/research" },
+  { label: "AI & Machine Learning", href: "/research" },
+  { label: "Digital Diagnostics", href: "/research" },
+  { label: "Pharmacogenomics", href: "/research" },
+  { label: "Forensic Sciences", href: "/research" },
+  { label: "Publications", href: "/resources" },
 ];
 
 const INCUBATION_LINKS = [
-  { label: "Apply for Incubation", href: "#incubator" },
-  { label: "Current Portfolio", href: "#startups" },
-  { label: "Success Stories", href: "#startups" },
-  { label: "Funding Programs", href: "#incubator" },
-  { label: "Events & Demos", href: "#resources" },
-  { label: "Resources & Forms", href: "#resources" },
+  { label: "Apply for Incubation", href: "/incubator" },
+  { label: "Current Portfolio", href: "/startups" },
+  { label: "Success Stories", href: "/startups" },
+  { label: "Funding Programs", href: "/incubator" },
+  { label: "Events & Demos", href: "/" },
+  { label: "Resources & Forms", href: "/resources" },
 ];
 
 export default function Footer() {

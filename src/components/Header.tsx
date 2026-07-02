@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Menu, X, ChevronRight } from "lucide-react";
 import { NAV_LINKS, SITE } from "@/lib/data";
 import { motion, AnimatePresence } from "framer-motion";
@@ -9,8 +10,8 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
-  const [activeSection, setActiveSection] = useState("home");
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const pathname = usePathname();
 
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 20);
@@ -21,34 +22,10 @@ export default function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [handleScroll]);
 
-  // Active section tracking via IntersectionObserver
+  // Close mobile menu on path changes
   useEffect(() => {
-    const sections = document.querySelectorAll("section[id]");
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { rootMargin: "-30% 0px -60% 0px" }
-    );
-    sections.forEach((s) => observer.observe(s));
-    return () => observer.disconnect();
-  }, []);
-
-  const handleNavClick = (href: string) => {
     setIsMobileOpen(false);
-    const id = href.replace("#", "");
-    const el = document.getElementById(id);
-    if (el) {
-      // Offset for the sticky floating header
-      const yOffset = -76;
-      const y = el.getBoundingClientRect().top + window.pageYOffset + yOffset;
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }
-  };
+  }, [pathname]);
 
   return (
     <>
@@ -70,11 +47,7 @@ export default function Header() {
           >
             {/* Logo */}
             <Link
-              href="#home"
-              onClick={(e) => {
-                e.preventDefault();
-                handleNavClick("#home");
-              }}
+              href="/"
               className="flex items-center gap-3 flex-shrink-0 group select-none"
               aria-label="DIMHANS Home"
             >
@@ -122,12 +95,11 @@ export default function Header() {
               onMouseLeave={() => setHoveredIdx(null)}
             >
               {NAV_LINKS.slice(0, 8).map((link, idx) => {
-                const sectionId = link.href.replace("#", "");
-                const isActive = activeSection === sectionId;
+                const isActive = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
                 return (
-                  <button
+                  <Link
                     key={link.href}
-                    onClick={() => handleNavClick(link.href)}
+                    href={link.href}
                     onMouseEnter={() => setHoveredIdx(idx)}
                     className={`relative px-3.5 py-1.5 text-[13px] font-semibold rounded-[8px] transition-colors duration-300 ${
                       isActive
@@ -156,21 +128,21 @@ export default function Header() {
                         transition={{ type: "spring", stiffness: 300, damping: 25 }}
                       />
                     )}
-                  </button>
+                  </Link>
                 );
               })}
             </nav>
 
             {/* CTA + Mobile Toggle */}
             <div className="flex items-center gap-3">
-              <button
-                onClick={() => handleNavClick("#contact")}
-                className="hidden md:flex btn-primary text-[13px] font-semibold py-1.5 px-4 h-9 rounded-[8px] shadow-sm hover:shadow-md transition-all duration-300"
+              <Link
+                href="/contact"
+                className="hidden md:flex btn-primary text-[13px] font-semibold py-1.5 px-4 h-9 rounded-[8px] shadow-sm hover:shadow-md transition-all duration-300 items-center gap-1"
                 aria-label="Apply for Incubation"
               >
                 Apply for Incubation
                 <ChevronRight size={13} />
-              </button>
+              </Link>
 
               <button
                 className="lg:hidden p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-primary)]/5 rounded-[8px] transition-colors"
@@ -200,12 +172,11 @@ export default function Header() {
           >
             <div className="bg-white/95 backdrop-blur-md border border-[var(--color-border)] rounded-[14px] shadow-xl p-4 flex flex-col gap-1">
               {NAV_LINKS.map((link) => {
-                const sectionId = link.href.replace("#", "");
-                const isActive = activeSection === sectionId;
+                const isActive = link.href === "/" ? pathname === "/" : pathname.startsWith(link.href);
                 return (
-                  <button
+                  <Link
                     key={link.href}
-                    onClick={() => handleNavClick(link.href)}
+                    href={link.href}
                     className={`text-left px-4 py-2.5 text-sm font-semibold rounded-[8px] transition-colors ${
                       isActive
                         ? "text-[var(--color-primary)] bg-[var(--color-primary)]/5"
@@ -213,17 +184,17 @@ export default function Header() {
                     }`}
                   >
                     {link.label}
-                  </button>
+                  </Link>
                 );
               })}
               <div className="pt-3 mt-2 border-t border-[var(--color-border)]">
-                <button
-                  onClick={() => handleNavClick("#contact")}
-                  className="btn-primary w-full justify-center text-sm py-2 px-4 rounded-[8px]"
+                <Link
+                  href="/contact"
+                  className="btn-primary w-full justify-center text-sm py-2 px-4 rounded-[8px] flex items-center gap-1"
                 >
                   Apply for Incubation
                   <ChevronRight size={14} />
-                </button>
+                </Link>
               </div>
             </div>
           </motion.div>

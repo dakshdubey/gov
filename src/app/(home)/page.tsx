@@ -1,35 +1,26 @@
 import Hero from "@/components/Hero";
 import TrustBanner from "@/components/TrustBanner";
-import About from "@/components/About";
 import LeadershipDesk from "@/components/LeadershipDesk";
-import Services from "@/components/Services";
-import ResearchInnovation from "@/components/ResearchInnovation";
-import Incubator from "@/components/Incubator";
-import Infrastructure from "@/components/Infrastructure";
-import Team from "@/components/Team";
-import Startups from "@/components/Startups";
-import SuccessStories from "@/components/SuccessStories";
+import PillarsDashboard from "@/components/PillarsDashboard";
 import Events from "@/components/Events";
-import Resources from "@/components/Resources";
-import Contact from "@/components/Contact";
 
 export default function Home() {
   return (
     <>
+      {/* 1. Main Welcome/Hero Section with Neural Networks & CountUps */}
       <Hero />
+
+      {/* 2. Horizontal Infinite Accreditions Marquee */}
       <TrustBanner />
-      <About />
+
+      {/* 3. Official Messages from Minister & Director */}
       <LeadershipDesk />
-      <Services />
-      <ResearchInnovation />
-      <Incubator />
-      <Infrastructure />
-      <Team />
-      <Startups />
-      <SuccessStories />
+
+      {/* 4. Pillars Dashboard - Directory Links to Dedicated Subpages */}
+      <PillarsDashboard />
+
+      {/* 5. Calendar of Upcoming Workshops & Institutional Events */}
       <Events />
-      <Resources />
-      <Contact />
     </>
   );
 }

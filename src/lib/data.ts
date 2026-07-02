@@ -21,16 +21,16 @@ export const SITE = {
 };
 
 export const NAV_LINKS = [
-  { label: "Home", href: "#home" },
-  { label: "About Us", href: "#about" },
-  { label: "Services", href: "#services" },
-  { label: "Research", href: "#research" },
-  { label: "Incubator", href: "#incubator" },
-  { label: "Infrastructure", href: "#infrastructure" },
-  { label: "Team", href: "#team" },
-  { label: "Startups", href: "#startups" },
-  { label: "Resources", href: "#resources" },
-  { label: "Contact", href: "#contact" },
+  { label: "Home", href: "/" },
+  { label: "About Us", href: "/about" },
+  { label: "Services", href: "/services" },
+  { label: "Research", href: "/research" },
+  { label: "Incubator", href: "/incubator" },
+  { label: "Infrastructure", href: "/infrastructure" },
+  { label: "Team", href: "/team" },
+  { label: "Startups", href: "/startups" },
+  { label: "Resources", href: "/resources" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export const STATS = [
