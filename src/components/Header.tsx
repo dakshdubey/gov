@@ -137,7 +137,7 @@ export default function Header() {
             <div className="flex items-center gap-3">
               <Link
                 href="/contact"
-                className="hidden md:flex btn-primary text-[13px] font-semibold py-1.5 px-4 h-9 rounded-[8px] shadow-sm hover:shadow-md transition-all duration-300 items-center gap-1"
+                className="hidden lg:flex btn-primary text-[13px] font-semibold py-1.5 px-4 h-9 rounded-[8px] shadow-sm hover:shadow-md transition-all duration-300 items-center gap-1 flex-shrink-0"
                 aria-label="Apply for Incubation"
               >
                 Apply for Incubation
