@@ -10,8 +10,18 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    checkIsMobile();
+    window.addEventListener("resize", checkIsMobile);
+    return () => window.removeEventListener("resize", checkIsMobile);
+  }, []);
 
   const handleScroll = useCallback(() => {
     setIsScrolled(window.scrollY > 20);
@@ -135,24 +145,26 @@ export default function Header() {
 
             {/* CTA + Mobile Toggle */}
             <div className="flex items-center gap-3">
-              <Link
-                href="/contact"
-                className="hidden lg:flex btn-primary text-[13px] font-semibold py-1.5 px-4 h-9 rounded-[8px] shadow-sm hover:shadow-md transition-all duration-300 items-center gap-1 flex-shrink-0"
-                aria-label="Apply for Incubation"
-              >
-                Apply for Incubation
-                <ChevronRight size={13} />
-              </Link>
-
-              <button
-                className="lg:hidden p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-primary)]/5 rounded-[8px] transition-colors"
-                onClick={() => setIsMobileOpen(!isMobileOpen)}
-                aria-label={isMobileOpen ? "Close menu" : "Open menu"}
-                aria-expanded={isMobileOpen}
-                aria-controls="mobile-menu"
-              >
-                {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
-              </button>
+              {!isMobile ? (
+                <Link
+                  href="/contact"
+                  className="btn-primary text-[13px] font-semibold py-1.5 px-4 h-9 rounded-[8px] shadow-sm hover:shadow-md transition-all duration-300 items-center gap-1 flex-shrink-0"
+                  aria-label="Apply for Incubation"
+                >
+                  Apply for Incubation
+                  <ChevronRight size={13} />
+                </Link>
+              ) : (
+                <button
+                  className="p-2 text-[var(--color-text-secondary)] hover:text-[var(--color-text)] hover:bg-[var(--color-primary)]/5 rounded-[8px] transition-colors"
+                  onClick={() => setIsMobileOpen(!isMobileOpen)}
+                  aria-label={isMobileOpen ? "Close menu" : "Open menu"}
+                  aria-expanded={isMobileOpen}
+                  aria-controls="mobile-menu"
+                >
+                  {isMobileOpen ? <X size={20} /> : <Menu size={20} />}
+                </button>
+              )}
             </div>
           </div>
         </div>
